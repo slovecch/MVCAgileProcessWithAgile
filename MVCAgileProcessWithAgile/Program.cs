@@ -1,6 +1,11 @@
+
+using MVCAgileProcessWithAgile.Models;
+
+
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MVCAgileProcessWithAgile.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MVCAgileProcessWithAgileContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MVCAgileProcessWithAgileContext") ?? throw new InvalidOperationException("Connection string 'MVCAgileProcessWithAgileContext' not found.")));
@@ -9,6 +14,13 @@ builder.Services.AddDbContext<MVCAgileProcessWithAgileContext>(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
