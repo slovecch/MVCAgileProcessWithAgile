@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MVCAgileProcessWithAgile.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MVCAgileProcessWithAgileContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MVCAgileProcessWithAgileContext") ?? throw new InvalidOperationException("Connection string 'MVCAgileProcessWithAgileContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
